@@ -1,0 +1,548 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casa Organizada e Limpa - Ana Marques</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #FAF6F0;
+            --card-bg: #FFFFFF;
+            --primary: #655B53;
+            --accent: #927C70;
+            --highlight: #7A9A60;
+            --border: #EDE3DC;
+            --text-main: #444444;
+            --text-muted: #777777;
+            --radius: 14px;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-bottom: 30px;
+        }
+
+        header {
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            padding: 24px 16px 20px;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        header h1 {
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        header h2 {
+            font-size: 0.95rem;
+            font-weight: 400;
+            color: #EDE3DC;
+            margin-top: 4px;
+        }
+
+        header p {
+            font-size: 0.8rem;
+            font-style: italic;
+            opacity: 0.85;
+            margin-top: 6px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 16px;
+        }
+
+        /* NAVEGAÇÃO PRINCIPAL */
+        .main-nav {
+            display: flex;
+            background: #EAE3DC;
+            border-radius: 30px;
+            padding: 4px;
+            margin-bottom: 16px;
+        }
+
+        .main-nav button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            background: transparent;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .main-nav button.active {
+            background: var(--card-bg);
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* TIMER BOX */
+        .timer-card {
+            background: linear-gradient(135deg, #655B53, #927C70);
+            color: white;
+            border-radius: var(--radius);
+            padding: 18px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        }
+
+        .timer-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        .timer-display {
+            font-size: 2.8rem;
+            font-weight: 700;
+            font-family: monospace;
+            margin: 6px 0 12px;
+        }
+
+        .timer-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .timer-buttons button {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 8px 16px;
+            font-weight: 600;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        /* TABS SUB-NAVEGAÇÃO */
+        .sub-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 16px;
+            scrollbar-width: none;
+        }
+
+        .sub-tabs::-webkit-scrollbar { display: none; }
+
+        .sub-tab-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .sub-tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* CARD DE CONTEÚDO */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .card-header h3 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .card-header p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        /* BARRA DE PROGRESSO */
+        .progress-box {
+            margin-bottom: 20px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #EAE3DC;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--highlight);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* LISTA DE TAREFAS */
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background: #FAF8F5;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            gap: 10px;
+        }
+
+        .task-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--highlight);
+            cursor: pointer;
+        }
+
+        .task-text {
+            font-size: 0.9rem;
+            color: var(--text-main);
+            flex: 1;
+        }
+
+        .task-text.completed {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px;
+        }
+
+        .action-btn.delete:hover { color: #D9534F; }
+        .action-btn.edit:hover { color: var(--primary); }
+
+        /* ADICIONAR TAREFA */
+        .add-task-box {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .add-task-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            outline: none;
+            background: #FAF8F5;
+        }
+
+        .add-task-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 20px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>CASA ORGANIZADA E LIMPA</h1>
+        <h2>Colocar a Vida em Ordem • Plano de 7 Dias</h2>
+        <p>Por Ana Marques</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- NAVEGAÇÃO PRINCIPAL -->
+        <div class="main-nav">
+            <button id="btnNavPlan" class="active" onclick="switchView('plan')">Plano de 7 Dias</button>
+            <button id="btnNavBonus" onclick="switchView('bonus')">Bónus: Manutenção</button>
+        </div>
+
+        <!-- TIMER DE 15 MINUTOS -->
+        <div class="timer-card">
+            <div class="timer-title"><i class="fa-regular fa-clock"></i> Regra dos 15 Minutos (Método 4)</div>
+            <div class="timer-display" id="timerDisplay">15:00</div>
+            <div class="timer-buttons">
+                <button onclick="startTimer()"><i class="fa-solid fa-play"></i> Iniciar</button>
+                <button onclick="pauseTimer()"><i class="fa-solid fa-pause"></i> Pausar</button>
+                <button onclick="resetTimer()"><i class="fa-solid fa-rotate-left"></i> Resetar</button>
+            </div>
+        </div>
+
+        <!-- VISÃO 1: PLANO DE 7 DIAS -->
+        <div id="planSection">
+            <div class="sub-tabs" id="planTabsNav"></div>
+            <div class="card" id="planContent"></div>
+        </div>
+
+        <!-- VISÃO 2: MÉTODOS BÓNUS & CÔMODOS -->
+        <div id="bonusSection" style="display: none;">
+            <div class="sub-tabs" id="bonusTabsNav"></div>
+            <div class="card" id="bonusContent"></div>
+        </div>
+
+    </div>
+
+    <footer>
+        Organização também é cuidado • Ana Marques © 2026
+    </footer>
+
+    <script>
+        // DADOS INICIAIS - PLANO 7 DIAS
+        const defaultPlanData = {
+            1: { title: "Dia 01: Observar e Diagnosticar", desc: "Percorra a casa e defina os focos de organização.", tasks: ["Percorrer os ambientes e observar pontos de bagunça", "Anotar onde há acúmulo de roupas, papéis ou louça", "Escolher um ambiente prioritário para começar"] },
+            2: { title: "Dia 02: Desapegar e Separar", desc: "Livre-se do excesso e do desnecessário.", tasks: ["Escolher uma gaveta, bancada ou pequena área", "Separar em: fica, doar, descartar e outro lugar", "Retirar da área o que for para doação ou lixo"] },
+            3: { title: "Dia 03: Organizar e Definir Lugares", desc: "Defina um lugar único para cada categoria.", tasks: ["Agrupar objetos semelhantes e usados juntos", "Definir um lugar fixo para cada categoria", "Deixar o de uso frequente em local fácil"] },
+            4: { title: "Dia 04: Limpar e Recuperar", desc: "Higienize os espaços após organizar.", tasks: ["Retirar objetos das superfícies a limpar", "Remover pó e limpar móveis", "Recolocar apenas o que pertence ao espaço"] },
+            5: { title: "Dia 05: Finalizar e Ajustar", desc: "Ajuste os detalhes e elimine resíduos.", tasks: ["Revisar os espaços organizados nos dias anteriores", "Ajustar o que ficou difícil de guardar", "Retirar sacolas de doação e lixo acumulado"] },
+            6: { title: "Dia 06: Criar uma Rotina Possível", desc: "Monte hábitos simples do dia a dia.", tasks: ["Definir 2 a 3 ações diárias rápidas", "Escolher um dia fixo para a tarefa semanal principal", "Planejar uma pausa para os dias mais corridos"] },
+            7: { title: "Dia 07: Manter e Celebrar", desc: "Celebre o resultado e mantenha o ritmo!", tasks: ["Observar as melhorias e celebrar a conquista", "Definir horário da revisão semanal rápida", "Anotar o próximo pequeno passo"] }
+        };
+
+        // DADOS INICIAIS - MÉTODOS BÓNUS
+        const defaultBonusData = {
+            "m1": { 
+                title: "Método 1: Matriz por Cômodo", 
+                desc: "Ideal para famílias e quem quer clareza em cada ambiente da casa.", 
+                tasksByCat: {
+                    "Cozinha": ["Pia livre, louça e bancadas (Diário)", "Limpar fogão, trocar panos e geladeira (Semanal)"],
+                    "Quartos": ["Arrumar cama e juntar roupas (Diário)", "Trocar lençóis, tirar pó e aspirar (Semanal)"],
+                    "Banheiro": ["Pia rápida e organizar balcão (Diário)", "Limpeza completa: box, vaso e piso (Semanal)"],
+                    "Sala / Gerais": ["Recolher objetos soltos (Diário)", "Tirar pó dos móveis e passar pano (Semanal)"],
+                    "Área de Serviço": ["Recolher e dobrar roupas do varal", "Organizar produtos de limpeza e varrer o piso"]
+                }
+            },
+            "m2": { 
+                title: "Método 2: Rotina 3-2-1", 
+                desc: "Ideal para pessoas ocupadas com metas diárias divididas.", 
+                tasksByCat: {
+                    "3 Ações Diárias Fixas (15 min)": ["Arrumar a cama ao acordar", "Pia limpa e organizada à noite", "5 minutos recolhendo objetos soltos"],
+                    "2 Tarefas Focadas por Dia": ["Segunda: Roupas (lavar/dobrar)", "Terça: Limpeza do Banheiro", "Quarta: Tirar pó das superfícies", "Quinta: Troca de camas e toalhas", "Sexta: Lixo e recicláveis"],
+                    "1 Tarefa Profunda por Mês": ["Organizar armários por dentro", "Limpar vidros e janelas", "Descarte de excessos"]
+                }
+            },
+            "m3": { 
+                title: "Método 3: Tracker Semanal", 
+                desc: "Acompanhamento visual perfeito para dar 'check' todos os dias.", 
+                tasksByCat: {
+                    "Checklist Diário": ["Pia da cozinha limpa", "Cama arrumada", "Objetos recolhidos da sala"],
+                    "Programação Semanal": ["Segunda: Varrer / Aspirar a casa", "Quarta: Limpeza completa do banheiro", "Sexta: Troca da roupa de cama"]
+                }
+            },
+            "m4": { 
+                title: "Método 4: Regra dos 15 Minutos", 
+                desc: "Ideal contra a procrastinação e rotinas imprevisíveis.", 
+                tasksByCat: {
+                    "Passos Práticos": ["Ajustar o timer de 15 minutos do topo", "Escolher um único ambiente/cômodo", "Focar no máximo de organização possível no tempo"]
+                }
+            }
+        };
+
+        let currentDay = 1;
+        let currentMethod = "m1";
+
+        let planData = JSON.parse(localStorage.getItem('v3_planData')) || defaultPlanData;
+        let bonusData = JSON.parse(localStorage.getItem('v3_bonusData')) || defaultBonusData;
+
+        function saveData() {
+            localStorage.setItem('v3_planData', JSON.stringify(planData));
+            localStorage.setItem('v3_bonusData', JSON.stringify(bonusData));
+        }
+
+        function switchView(view) {
+            if (view === 'plan') {
+                document.getElementById('planSection').style.display = 'block';
+                document.getElementById('bonusSection').style.display = 'none';
+                document.getElementById('btnNavPlan').classList.add('active');
+                document.getElementById('btnNavBonus').classList.remove('active');
+            } else {
+                document.getElementById('planSection').style.display = 'none';
+                document.getElementById('bonusSection').style.display = 'block';
+                document.getElementById('btnNavPlan').classList.remove('active');
+                document.getElementById('btnNavBonus').classList.add('active');
+                renderBonusTabs();
+                renderBonusContent();
+            }
+        }
+
+        /* --- PLANO DE 7 DIAS --- */
+        function renderPlanTabs() {
+            const tabsNav = document.getElementById('planTabsNav');
+            tabsNav.innerHTML = '';
+            for (let i = 1; i <= 7; i++) {
+                const btn = document.createElement('button');
+                btn.className = `sub-tab-btn ${i === currentDay ? 'active' : ''}`;
+                btn.innerText = `Dia 0${i}`;
+                btn.onclick = () => { currentDay = i; renderPlanTabs(); renderPlanContent(); };
+                tabsNav.appendChild(btn);
+            }
+        }
+
+        function renderPlanContent() {
+            const container = document.getElementById('planContent');
+            const day = planData[currentDay];
+
+            const total = day.tasks.length;
+            const completed = day.tasks.filter(t => typeof t === 'object' && t.completed).length;
+            const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+            let html = `
+                <div class="card-header">
+                    <h3>${day.title}</h3>
+                    <p>${day.desc}</p>
+                </div>
+                <div class="progress-box">
+                    <div class="progress-label">
+                        <span>Progresso do Dia</span>
+                        <span>${completed}/${total} (${percent}%)</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${percent}%;"></div>
+                    </div>
+                </div>
+                <div class="task-list">
+            `;
+
+            day.tasks.forEach((task, idx) => {
+                const text = typeof task === 'object' ? task.text : task;
+                const isChecked = typeof task === 'object' ? task.completed : false;
+
+                html += `
+                    <div class="task-item">
+                        <div class="task-left">
+                            <input type="checkbox" class="task-checkbox" ${isChecked ? 'checked' : ''} onchange="togglePlanTask(${idx})">
+                            <span class="task-text ${isChecked ? 'completed' : ''}">${text}</span>
+                        </div>
+                        <div class="task-actions">
+                            <button class="action-btn edit" onclick="editPlanTask(${idx})"><i class="fa-solid fa-pen"></i></button>
+                            <button class="action-btn delete" onclick="deletePlanTask(${idx})"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `</div>
+                <div class="add-task-box">
+                    <input type="text" id="newPlanTaskInput" class="add-task-input" placeholder="Adicionar nova tarefa...">
+                    <button class="add-task-btn" onclick="addPlanTask()">+ Criar</button>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function togglePlanTask(idx) {
+            const task = planData[currentDay].tasks[idx];
+            if (typeof task === 'string') {
+                planData[currentDay].tasks[idx] = { text: task, completed: true };
+            } else {
+                task.completed = !task.completed;
+            }
+            saveData();
+            renderPlanContent();
+        }
+
+        function editPlanTask(idx) {
+            const task = planData[currentDay].tasks[idx];
+            const currentText = typeof task === 'object' ? task.text : task;
+            const newText = prompt("Editar tarefa:", currentText);
+            if (newText !== null && newText.trim() !== "") {
+                if (typeof task === 'object') task.text = newText.trim();
+                else planData[currentDay].tasks[idx] = { text: newText.trim(), completed: false };
+                saveData();
+                renderPlanContent();
+            }
+        }
+
+        function deletePlanTask(idx) {
+            planData[currentDay].tasks.splice(idx, 1);
+            saveData();
+            renderPlanContent();
+        }
+
+        function addPlanTask() {
+            const input = document.getElementById('newPlanTaskInput');
+            if (input && input.value.trim() !== '') {
+                planData[currentDay].tasks.push({ text: input.value.trim(), completed: false });
+                saveData();
+                renderPlanCon
